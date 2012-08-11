@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * CodeIgniter URL2PNG 
- * 
+ * CodeIgniter URL2PNG
+ *
  * NOTICE OF LICENSE
  *
  * Licensed under the Academic Free License version 3.0
@@ -21,7 +21,7 @@
 /**
  * URL2PNG library
  *
- * Library to be used in conjunction with a valid URL2PNG account. I DO NOT have any affiliation with URL2PNG so please do not contact 
+ * Library to be used in conjunction with a valid URL2PNG account. I DO NOT have any affiliation with URL2PNG so please do not contact
  * me if there is a problem with their service :-)
  * This currently works with v6 of the URL2PNG API (not tested for earlier versions)
  *
@@ -29,7 +29,7 @@
 class URL2PNG
 {
 	/**
-	 * The name of the table (for logging if enabled)	
+	 * The name of the table (for logging if enabled)
 	 * @var string
 	 */
 	public $table = 'url2png_log';
@@ -54,7 +54,7 @@ class URL2PNG
 
 	/**
 	 * Enable logging to database
-	 * @var bool	 
+	 * @var bool
 	 */
 	public $logging = FALSE;
 
@@ -62,7 +62,7 @@ class URL2PNG
 	 * Set viewpoint - Max 5000x5000
 	 * @var string
 	 */
-	public $viewport = '640x480';	
+	public $viewport = '640x480';
 
 	/**
 	 * Set thumbnail max width
@@ -74,13 +74,13 @@ class URL2PNG
 	 * Set thumbnail max height
 	 * @param 	string
 	 */
-	public $thumbnail_max_height = '100';	
+	public $thumbnail_max_height = '100';
 
 	/**
 	 * Will attempt to capture entire document canvas.
 	 * @param 	string
 	 */
-	public $fullpage = 'true';		
+	public $fullpage = 'true';
 
 	/**
 	 * Forces a fresh screenshot with each request, overwriting the previous copy
@@ -132,7 +132,7 @@ class URL2PNG
 	 * @param 	array 		$args
 	 * @return 	string
 	 */
-	public function url2png_v6($url = '', $args = array()) 
+	public function url2png_v6($url = '', $args = array())
 	{
 		if (trim($url) == '') return FALSE;
 
@@ -141,7 +141,7 @@ class URL2PNG
 	  	$options += $args;
 
 	  	# create the query string based on the options
-		foreach($options as $key => $value) 
+		foreach($options as $key => $value)
 		{
 			$_parts[] = "$key=$value";
 	  	}
@@ -165,7 +165,7 @@ class URL2PNG
 		$options['thumbnail_max_width'] = (array_key_exists('thumbnail_max_width', $options)) ? $options['thumbnail_max_width'] : $this->thumbnail_max_width;
 		$options['thumbnail_max_height'] = (array_key_exists('thumbnail_max_height', $options)) ? $options['thumbnail_max_height'] : $this->thumbnail_max_height;
 		$options['viewport'] = (array_key_exists('viewport', $options)) ? $options['viewport'] : $this->viewport;
-		
+
 		$source = $this->url2png_v6($url, $options);
 		$img = ($source) ? sprintf('<img src="%s" title="%s">', $source, $url) : FALSE;
 		return $img;
@@ -186,14 +186,14 @@ class URL2PNG
 
         $url = urlencode(trim($url));
         $token = md5($this->secret .'+'. $url);
-        return $this->url2png_url . $this->api_key .'/'. $token .'/'. $size .'/'. $url;     
+        return $this->url2png_url . $this->api_key .'/'. $token .'/'. $size .'/'. $url;
 	}
 
 	/**
 	 * Display the image
 	 * @param   string 		$url 	e.g 'google.co.uk'
 	 * @param 	string 		$size 	e.g '800x600'
-	 * @return  string		
+	 * @return  string
 	 */
 	public function display_image($url = '', $size = '800x600')
 	{
@@ -220,7 +220,7 @@ class URL2PNG
         $file_loc = $_SERVER['DOCUMENT_ROOT'].$path.$file;
 
         if (!file_exists($file_loc))
-        {   
+        {
             $img_file = file_get_contents($this->get_image_from_url($url, $size));
             $file_handler = fopen($file_loc, 'w');
 
@@ -234,7 +234,7 @@ class URL2PNG
             if ($this->logging == TRUE)
             {
 				$this->_log_to_db($file);
-            }            
+            }
         }
         else
         {
