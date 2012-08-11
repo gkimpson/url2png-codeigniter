@@ -160,7 +160,7 @@ class URL2PNG
 	 */
 	public function display_image_with_viewport($url = '', $options = array())
 	{
-		$options['force'] = (array_key_exists('fosrce', $options)) ? $options['force'] : $this->force;
+		$options['force'] = (array_key_exists('force', $options)) ? $options['force'] : $this->force;
 		$options['fullpage'] = (array_key_exists('fullpage', $options)) ? $options['fullpage'] : $this->fullpage;
 		$options['thumbnail_max_width'] = (array_key_exists('thumbnail_max_width', $options)) ? $options['thumbnail_max_width'] : $this->thumbnail_max_width;
 		$options['thumbnail_max_height'] = (array_key_exists('thumbnail_max_height', $options)) ? $options['thumbnail_max_height'] : $this->thumbnail_max_height;
