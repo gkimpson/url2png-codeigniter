@@ -1,3 +1,34 @@
 URL2PNG
 
 PHP Codeigniter library for URL2PNG.com - API for generating website thumbnails
+
+# Usage #
+
+		$config = array(
+					'api_key'	=> 'PXXXXXXXXXXXXX',
+					'secret'	=> 'SXXXXXXXXXXXXX'
+				);
+		
+		# load library with api_key & secret (supplied from URL2PNG with a valid account)	
+		$this->load->library('url2png', $config);
+
+		$url = 'bbc.co.uk';
+		
+		# display the image with viewport $options array is optional
+		$options = array(
+					'viewport' 	=> '640x480',
+					'force' 	=> 'true',
+					'fullpage'	=> 'false',
+					'thumbnail_max_width' => '200',
+					'thumbnail_max_height' => '100'
+					);
+		echo $this->url2png->display_image_with_viewport($url, $options);
+
+		# display the image to the browser
+		echo $this->url2png->display_image($url);
+
+		# save image to a directory
+		$size = '800x600';
+		$path = '/path/to/directory';
+		$file = 'your-filename.jpg';
+		$this->url2png->save_image($url, $size, $path, $file);
