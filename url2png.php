@@ -13,17 +13,20 @@
  * @author      Gavin Kimpson
  * @copyright   Copyright (c) Gavin Kimpson (http://www.gavk.co.uk)
  * @license     http://opensource.org/licenses/AFL-3.0 Academic Free License (AFL 3.0)
- * @version  	0.1
+ * @version  	0.2
  */
-
 // ------------------------------------------------------------------------
 
 /**
  * URL2PNG library
  *
- * Library to be used in conjunction with a valid URL2PNG account. I DO NOT have any affiliation with URL2PNG so please do not contact
- * me if there is a problem with their service :-)
- * This currently works with v6 of the URL2PNG API (not tested for earlier versions)
+ * Unofficial library to be used in conjunction with a valid URL2PNG account.
+ * Get your URL2PNG account here http://url2png.com/signup/
+ *
+ * I DO NOT have any affiliation with URL2PNG.
+ * Please DO NOT contact me seeking support. :)
+ *
+ * See: http://url2png.com/docs/
  *
  */
 class URL2PNG
@@ -38,55 +41,55 @@ class URL2PNG
 	 * The URL for URL2PNG API
 	 * @var string
 	 */
-	public $url2png_url = 'http://api.url2png.com/v3/';
+	public $url2png_url = 'http://api.url2png.com/v6/';
 
 	/**
 	 * API Key
 	 * @var string
 	 */
-	public $api_key = '';
+	public $api_key = 'PXXXXXXXXXXXXXXXXX';
 
 	/**
 	 * Secret 'key'
 	 * @var string
 	 */
-	public $secret = '';
+	public $secret = 'SXXXXXXXXXXXXXXXXX';
 
 	/**
 	 * Enable logging to database
 	 * @var bool
 	 */
-	public $logging = FALSE;
+	public $logging = false;
 
 	/**
 	 * Set viewpoint - Max 5000x5000
 	 * @var string
 	 */
-	public $viewport = '640x480';
+	public $viewport = '1024x768';
 
 	/**
 	 * Set thumbnail max width
-	 * @param 	string
+	 * @param 	mixed
 	 */
-	public $thumbnail_max_width = '200';
+	public $thumbnail_max_width = false;
 
 	/**
 	 * Set thumbnail max height
-	 * @param 	string
+	 * @param 	mixed
 	 */
-	public $thumbnail_max_height = '100';
+	public $thumbnail_max_height = false;
 
 	/**
 	 * Will attempt to capture entire document canvas.
-	 * @param 	string
+	 * @param 	bool
 	 */
-	public $fullpage = 'true';
+	public $fullpage = false;
 
 	/**
 	 * Forces a fresh screenshot with each request, overwriting the previous copy
-	 * @param 	string
+	 * @param 	bool
 	 */
-	public $force = 'true';
+	public $force = false;
 
 	// ------------------------------------------------------------------------
 
@@ -137,20 +140,20 @@ class URL2PNG
 		if (trim($url) == '') return FALSE;
 
 		# urlencode request target
-		$options['url'] = trim(urlencode($url));
-	  	$options += $args;
+		$args['url'] = $url;
 
 	  	# create the query string based on the options
-		foreach($options as $key => $value)
+
+	  	foreach($options as $key => $value)
 		{
-			$_parts[] = "$key=$value";
-	  	}
+			$_parts[] = $key . "=" . urlencode(trim($value));
+		}
 
 		# create a token from the ENTIRE query string
 		$query_string = implode("&", $_parts);
 		$token = md5($query_string . $this->secret);
 
-		return 'http://beta.url2png.com/v6/'. $this->api_key .'/'. $token .'/png/?'.$query_string;
+		return 'http://api.url2png.com/v6/'. $this->api_key .'/'. $token .'/png/?'.$query_string;
 	}
 
 	/**
@@ -177,10 +180,10 @@ class URL2PNG
 	 * Get image from URL via URL2PNG API
 	 *
 	 * @param   string 		$url 	e.g 'google.co.uk'
-	 * @param 	string 		$size 	e.g '800x600'
+	 * @param 	string 		$size 	e.g '1024x768'
 	 * @return  string
 	 */
-	private function get_image_from_url($url = '', $size = '800x600')
+	private function get_image_from_url($url = '', $size = '1024x768')
 	{
 		if (trim($url) == '') return FALSE;
 
@@ -192,10 +195,10 @@ class URL2PNG
 	/**
 	 * Display the image
 	 * @param   string 		$url 	e.g 'google.co.uk'
-	 * @param 	string 		$size 	e.g '800x600'
+	 * @param 	string 		$size 	e.g '1024x768'
 	 * @return  string
 	 */
-	public function display_image($url = '', $size = '800x600')
+	public function display_image($url = '', $size = '1024x768')
 	{
 		if (trim($url) == '') return FALSE;
 
@@ -208,12 +211,12 @@ class URL2PNG
 	 * Save image locally to your own server - this will NOT overwrite existing filename
 	 *
 	 * @param 	string 		$url 		e.g 'google.co.uk'
-	 * @param 	string 		$size 		e.g '800x600'
+	 * @param 	string 		$size 		e.g '1024x768'
 	 * @param 	string 		$path 		e.g '/path/to/your/images/' including BOTH the initial & last backslash
 	 * @param 	string 		$file 		e.g 'your-screenshot.jpg'
 	 * @return 	void
 	 */
-	public function save_image($url = '', $size = '800x600', $path = '/images/screens/', $file = 'your-screenshot.jpg')
+	public function save_image($url = '', $size = '1024x768', $path = '/images/screens/', $file = 'your-screenshot.jpg')
 	{
 		if (trim($url) == '') return FALSE;
 
